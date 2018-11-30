@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>CCINSHAE - www.gob.mx</title> 
+        <link href='https://framework-gb.cdn.gob.mx/favicon.ico' rel='shortcut icon'/>
+        <link href="https://www.gob.mx/cms/application.css" rel="stylesheet" />
+	<link href="https://framework-gb.cdn.gob.mx/assets/styles/main.css" rel="stylesheet"/>
+	<script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gobmx.js"></script>
+    </h:head>
+    <h:body style="margin: 0 auto; text-align: center;">	
+        <div class="nav" role="navigation">
+		<nav class="navbar navbar-inverse sub-navbar navbar-fixed-top">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#subenlaces">
+                          <span class="sr-only">Interruptor de Navegación</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">CCINSHAE -  INFLUENZA</a>
+                      </div>
+                    </div>
+                </nav>		
+            </div>
+        <div style="height: 50px"></div>
+        <h:form>
+             <p:graphicImage name="/images/CCINSHAE.jpg"/>           
+                    <p:panel header="Iniciar Sesión" style="position: relative; width: 25%; border-width: 2px; margin: 0 auto; text-align: center;">
+                        <p:messages id="mensajes"  closable="true"/>
+                            <p:panelGrid style="margin: 0 auto; text-align: center; width: 25%; margin-bottom: 0;">
+                                <p:row>   
+                                    <p:column>
+                                        <p:inputText required="true"
+                                                     requiredMessage="Por favor ingresar usuario"
+                                                     placeholder="Usuario"
+                                                     value="#{usuario.usuario}"
+                                                     id="usuario"> </p:inputText>
+                                                     <p:message for="usuario" />
+                                                     
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:password required="true"
+                                                    validatorMessage="Contraseña incorrecta"
+                                                    placeholder="Contraseña"
+                                                    value="#{usuario.contraseña}"
+                                                    id="password"></p:password>
+                                                    <p:messages for="password" />
+                                                   
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                            <f:facet name="footer" >
+                                <div align="center">
+                                    <p:commandButton value="Acceder&#187;"
+                                                     action="#{usuario.inicioSesion()}"
+                                                     actionListener="#{usuario.mensaje()}"
+                                                     ajax="false"
+                                                     validateClient="true"/>  
+                                </div>
+                            </f:facet>
+                        </p:panel>
+            </h:form>
+        <div style="height: 300px"></div>
+    </h:body>
+</html>

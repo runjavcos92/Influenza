@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link href='https://framework-gb.cdn.gob.mx/favicon.ico' rel='shortcut icon'/>
+        <link href="https://www.gob.mx/cms/application.css" rel="stylesheet" />
+	<link href="https://framework-gb.cdn.gob.mx/assets/styles/main.css" rel="stylesheet"/>
+	<script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gobmx.js"></script>
+        <title>CCINSHAE|GESTION DE USUARIOS</title>
+    </h:head>
+    <h:body>
+        <div class="nav" role="navigation">
+		<nav class="navbar navbar-inverse sub-navbar navbar-fixed-top">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#subenlaces">
+                          <span class="sr-only">Interruptor de Navegación</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">CCINSHAE -  INFLUENZA</a>
+                      </div>
+                    </div>
+                </nav>		
+            </div>
+        <div style="height: 50px"></div>
+        <h:form>
+            <p:toolbar style="background: #004a93; color: #f5f5f5;">
+                <f:facet name="left">
+                    CCINSHAE
+                </f:facet>
+                <f:facet name="right">
+                    <h:commandLink value="Cerrar Sesión"
+                                   style="background: #004a93; color: #f5f5f5;"
+                                   action="#{usuario.cerrarSesion()}"
+                                   actionListener="#{logInfluenzaDAO.DropAcu(usuario.usuario)}"></h:commandLink>
+                </f:facet>
+            </p:toolbar>
+            <p:messages id="msjs" showDetail="true" closable="true"/>
+            <p:accordionPanel>
+                <p:tab title="Administrar Usuarios">
+                    <p:accordionPanel>
+                            <p:tab title="Crear Usuario">
+                                <h:panelGrid columns="11" id="panel">
+                                    <h:outputLabel value="Nombre Personal: "/>
+                                    <h:inputText  
+                                                 requiredMessage="Campo vacío"
+                                                 value="#{userBean.nombreCreate}"
+                                                 id="nombre_personal"/>
+                                    <h:outputLabel value="Usuario: "/>
+                                    <h:inputText 
+                                                 requiredMessage="Campo vacío"
+                                                 value="#{userBean.usuarioCreate}"
+                                                 id="nombre_usuario"/>
+                                    <h:outputLabel value="Contraseña: "/>
+                                    <h:inputText 
+                                                 requiredMessage="Campo vacío"
+                                                 value="#{userBean.contraseñaCreate}"
+                                                 id="contraseña">
+                                    </h:inputText>
+                                    <h:outputLabel value="Privilegios: "/>
+                                    <p:selectOneMenu id="rol" value="#{rolDTO.idRol}">
+                                        <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                        <f:selectItems value="#{rolDTO.listaRolSA}"/>
+                                        <p:ajax event="change" update="@this"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Instituto: "/>
+                                    <p:selectOneMenu id="inst" value="#{institutoBean.id_instituto}">
+                                        <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                        <f:selectItems value="#{institutoBean.listaInstituto}"/>
+                                        <p:ajax event="change" update="@this"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton value="Guardar" 
+                                                     action="#{UsuarioDAO.create(userBean,rolDTO.idRol,institutoBean.id_instituto)}"
+                                                     actionListener="#{UsuarioDAO.mensajes()}"
+                                                     update="listaUsers1 listaUsers2 nombre_personal nombre_usuario contraseña rol inst">
+                                        <p:resetInput target="panel"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
+                        <p:tab title="Modificar Usuario" id="updateUser" >
+                                <p:panel>
+                                    <h:panelGrid columns="10">   
+                                        <h:outputLabel value="Seleccionar usuario:"/>
+                                        <p:selectOneMenu id="listaUsers1" value="#{userBeanUpdate.id_usuario}">
+                                                <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                                <f:selectItems value="#{userBeanUpdate.listaUsuarioU}"/>
+                                                <f:ajax listener="#{userBeanUpdate.changeUser}" render="nombreUpdate usuarioUpdate contraseñaUpdate @this"/>
+                                            </p:selectOneMenu>
+                                                    <h:outputLabel value="Nombre Personal:"/>
+                                                    <h:inputText value="#{userBeanUpdate.nombre}" id="nombreUpdate"/>
+                                                    <h:outputLabel value="Nombre de usuario"/>
+                                                    <h:inputText value="#{userBeanUpdate.usuario}" id="usuarioUpdate"/>
+                                                    <h:outputLabel value="Contraseña:"/>
+                                                    <h:inputText value="#{userBeanUpdate.contraseña}" id="contraseñaUpdate"/>
+                                                <p:commandButton value="Modificar"
+                                                                 action="#{UsuarioDAO.update(userBeanUpdate.id_usuario,userBeanUpdate)}"
+                                                                 actionListener="#{userBean.mensajesUpdate()}"
+                                                                 update="listaUsers1 listaUsers2"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            <p:tab title="Borrar Usuario">
+                                <h:panelGrid columns="3">
+                                    <p:selectOneMenu id="listaUsers2" value="#{userBean.id_usuario}">
+                                        <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                        <f:selectItems value="#{userBean.listaUsuario}"/>
+                                        <f:ajax render="@this"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton value="Borrar"
+                                                     action="#{UsuarioDAO.delete(userBean.id_usuario)}"
+                                                     actionListener="#{userBean.mensajes()}"
+                                                     update="listaUsers2 listaUsers1"/>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel> 
+                </p:tab>
+                <p:tab title="Generar Reporte">
+                    <p:tabView orientation="left">
+                    <p:tab title="Acumulado">
+                        <ui:include src="reportes/acumulado.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Por instituto">
+                    <!--<p:dataTable var="institutoDAO" value=">
+                            <p:column headerText="Instituto">
+                                <h:outputText value=""/>
+                            </p:column>
+                            <p:column headerText="Último registro">
+                                <h:outputText value="" />
+                            </p:column>
+                        </p:dataTable>-->
+                    </p:tab>
+                    <p:tab title="HIM">
+                        <ui:include src="reportes/him.xhtml"/>
+                    </p:tab>    
+                    <p:tab title="INCAN">
+                        <ui:include src="reportes/incan.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INCAR">
+                        <ui:include src="reportes/incar.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INCMN">
+                        <ui:include src="reportes/incmn.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INER">
+                         <ui:include src="reportes/iner.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INNN">
+                        <ui:include src="reportes/innn.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INP">
+                        <ui:include src="reportes/inp.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INPER">
+                        <ui:include src="reportes/inper.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INPSIQ">
+                        <ui:include src="reportes/inpsiq.xhtml"/>
+                    </p:tab>
+                    <p:tab title="INR">
+                        <ui:include src="reportes/inr.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HMUJER">
+                        <ui:include src="reportes/hmujer.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HGM">
+                        <ui:include src="reportes/hgm.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HGMGG">
+                        <ui:include src="reportes/hgmgg.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HJM">
+                        <ui:include src="reportes/hjm.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HJC">
+                        <ui:include src="reportes/hjc.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HNH">
+                        <ui:include src="reportes/hnh.xhtml"/>
+                    </p:tab>
+                    <p:tab title="HRAEI">
+                        <ui:include src="reportes/hraei.xhtml"/>
+                    </p:tab>
+                </p:tabView>
+                </p:tab>
+            </p:accordionPanel>
+            <!--<p:panel header="Lista de Usuarios">
+                <p:dataTable>
+                    
+                </p:dataTable>
+            </p:panel>-->
+        </h:form>  
+        <div style="height: 50px"></div>
+    </h:body>
+</html>

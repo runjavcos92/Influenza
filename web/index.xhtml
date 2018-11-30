@@ -1,0 +1,625 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>CCINSHAE - INFLUENZA </title> 
+        <link href='https://framework-gb.cdn.gob.mx/favicon.ico' rel='shortcut icon'/>
+        <link href="https://www.gob.mx/cms/application.css" rel="stylesheet" />
+	<link href="https://framework-gb.cdn.gob.mx/assets/styles/main.css" rel="stylesheet"/>
+	<script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gobmx.js"></script>
+    </h:head>
+    <h:body style="margin: 0 auto; text-align: center; width: 100%;">
+        <div class="nav" role="navigation">
+		<nav class="navbar navbar-inverse sub-navbar navbar-fixed-top">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#subenlaces">
+                          <span class="sr-only">Interruptor de Navegación</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">CCINSHAE -  INFLUENZA</a>
+                      </div>
+                    </div>
+                </nav>		
+            </div>
+        <div style="height: 50px"></div>
+        <h:outputScript library="js" name="scriplet.js"/>
+        <h:form>
+            <p:toolbar style="background: #004a93; color: #f5f5f5;">
+                <f:facet name="left">
+                    Unidad Médica: <p:outputLabel value="#{instituto.nombre}"></p:outputLabel>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Corte: <p:outputLabel value="#{instituto.lastUpdate}"/>&nbsp;
+                    <p:outputLabel value="#{instituto.lastTimeUpdate}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <h:commandLink value="Cerrar Sesión"
+                                   style="background: #004a93; color: #f5f5f5;"
+                                   action="#{usuario.cerrarSesion()}"></h:commandLink>
+                </f:facet>
+            </p:toolbar>
+            <p:messages id="mensajes" showDetail="true" closable="true"/>
+            <p:panel header="REPORTE DE CASOS DE ATENCIÓN MÉDICA DE PACIENTES CON INFECCIÓN RESPIRATORIA AGUDA Y/O ENFERMEDAD TIPO INFLUENZA">
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="8"
+                                      style="background: #004a93; 
+                                      color: #ffffff;">NÚMERO TOTAL DE CASOS ACUMULADO AMBULATORIOS Y HOSPITALIZADOS</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">CASOS CONFIRMADOS ACUMULADOS</p:column>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">AMBULATORIO</p:column>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">HOSPITALIZADO</p:column>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">TOTAL</p:column>
+                        </p:row>
+                    </f:facet>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">A</p:column>
+                            <p:column colspan="2">
+                                <p:inputText
+                                    id="A_A"
+                                    maxlength="4"
+                                    size="2"
+                                    required="true" 
+                                    requiredMessage="Campo vacío"
+                                    class="A"
+                                    value="#{logInfluenzaDTO.t1_A_A}"
+                                    onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                    <p:ajax event="keyup" update="tot1" listener="#{logInfluenzaDTO.sumar}"/>
+                                </p:inputText>
+                            </p:column>
+                            <p:column colspan="2">
+                                <p:inputText 
+                                             id="A_H"
+                                             maxlength="4" 
+                                             size="2"
+                                             required="true" 
+                                             requiredMessage="Campo vacío"
+                                             class="A"
+                                             value="#{logInfluenzaDTO.t1_A_H}"
+                                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot1" listener="#{logInfluenzaDTO.sumar}"/>
+                                </p:inputText>
+                            </p:column>
+                            <p:column colspan="2"> 
+                                <h:outputText id="tot1" value="#{logInfluenzaDTO.suma1}"/>
+                            </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">H1</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4" 
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         size="2"
+                                         value="#{logInfluenzaDTO.t1_H1_A}"
+                                         class="H1"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot2" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4" 
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         value="#{logInfluenzaDTO.t1_H1_H}"
+                                         class="H1"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot2" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot2" value="#{logInfluenzaDTO.suma2}"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">H3</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="H3"
+                                         value="#{logInfluenzaDTO.t1_H3_A}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot3" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>  
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="H3"
+                                         value="#{logInfluenzaDTO.t1_H3_H}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot3" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot3" value="#{logInfluenzaDTO.suma3}"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">B</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="B"
+                                         value="#{logInfluenzaDTO.t1_B_A}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot4" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                            <p:column colspan="2">
+                                <p:inputText maxlength="4"
+                                             size="2"
+                                             required="true" 
+                                             requiredMessage="Campo vacío"
+                                             class="B"
+                                             value="#{logInfluenzaDTO.t1_B_H}"
+                                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                    <p:ajax event="keyup" update="tot4" listener="#{logInfluenzaDTO.sumar}"/>
+                                </p:inputText>
+                            </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot4" value="#{logInfluenzaDTO.suma4}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+<!-- Table 2-->            
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="8"
+                                      style="background: #004a93; 
+                                      color: #ffffff;">PACIENTES HOSPITALIZADOS POR IRA/ETI/IRAG</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">PACIENTES INGRESADOS POR IRA/ETI/IRAG EN LAS ÚLTIMAS 24HRS.</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="P"
+                                               value="#{logInfluenzaDTO.t2_24}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">PACIENTES HOSPITALIZADOS POR IRA/ETI/IRAG AL MOMENTO DEL REPORTE</p:column>
+                        
+                        <p:column><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="P"
+                                               value="#{logInfluenzaDTO.t2_H_M}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">PACIENTES INTUBADOS POR IRA/ETI/IRAG AL MOMENTO DEL REPORTE</p:column>
+                        <p:column><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="P"
+                                               value="#{logInfluenzaDTO.t2_I_M}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">CAMAS DISPONIBLES EN UTI PARA IRA/ETI/IRAG AL MOMENTO DEL REPORTE</p:column>
+                        <p:column><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="P"
+                                               value="#{logInfluenzaDTO.t2_C_UTI}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row> 
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">CAMAS DISPONIBLES EN URGENCIAS PARA IRA/ETI/IRAG AL MOMENTO DEL REPORTE</p:column>
+                        <p:column><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="P"
+                                               value="#{logInfluenzaDTO.t2_C_U}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <!-- Table 3-->
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="6"
+                                      style="background: #d8ecff;">DEFUNCIONES POR IRA/ETI/IRAG</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">DEFUNCIONES POR NEUMONÍA ATÍPICA (Neumonía atípica adquirida en la comunidad: <br></br>aquella causada por
+                            microorganismos diferentes a Streptococcus pneumoniae, <br></br>Haemophilus influenzae o Moraxella catarrhalis).</p:column>  
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               value="#{logInfluenzaDTO.t3_DF_NA}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">DEFUNCIONES COMPROBADAS POR PCR</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               value="#{logInfluenzaDTO.t3_DF_PCR}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <!-- Table 4 -->
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="8"
+                                      style="background: #d8ecff; ">DEFUNCIONES POR IRA/ETI/IRAG CONFIRMADAS ACUMULADAS</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">A</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="DEFC"
+                                               value="#{logInfluenzaDTO.t4_DF_A}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot5" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">H1</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="DEFC"
+                                               value="#{logInfluenzaDTO.t4_DF_H1}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot5" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">H3</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="DEFC"
+                                               value="#{logInfluenzaDTO.t4_DF_H3}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot5" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">B</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="DEFC"
+                                               value="#{logInfluenzaDTO.t4_DF_B}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot5" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold; align-items: center" colspan="6">TOTAL</p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot5" value="#{logInfluenzaDTO.suma5}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid><br></br>
+                <!--TABLE 5-->
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="8" style="background: #004a93; color: #ffffff;">PERSONAL DE SALUD</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="8" style="background: #004a93; color: #ffffff;">NÚMERO TOTAL DE CASOS ACUMULADO</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">CASOS CONFIRMADOS</p:column>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">AMBULATORIO</p:column>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">HOSPITALIZADO</p:column>
+                            <p:column colspan="2" style="font-weight: bold; background: #004a93; color: #ffffff;">TOTAL</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">A</p:column>
+                        <p:column colspan="2">
+                            <p:inputText
+                                id="t5_reg1"
+                                maxlength="4"
+                                size="2"
+                                required="true" 
+                                requiredMessage="Campo vacío"
+                                class="t5_A"
+                                value="#{logInfluenzaDTO.t5_PS_A_A}"
+                                onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot6" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText id="t5_reg2"
+                                         maxlength="4" 
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="t5_A"
+                                         value="#{logInfluenzaDTO.t5_PS_A_H}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot6" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column colspan="2"> 
+                            <h:outputText id="tot6" value="#{logInfluenzaDTO.suma6}"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">H1</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4" 
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         size="2"
+                                         value="#{logInfluenzaDTO.t5_PS_H1_A}"
+                                         class="t5_H1"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot7" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4" 
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         value="#{logInfluenzaDTO.t5_PS_H1_H}"
+                                         class="t5_H1"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                            <p:ajax event="keyup" update="tot7" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot7" value="#{logInfluenzaDTO.suma7}"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">H3</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="t5_H3"
+                                         value="#{logInfluenzaDTO.t5_PS_H3_A}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot8" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="t5_H3"
+                                         value="#{logInfluenzaDTO.t5_PS_H3_H}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot8" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot8" value="#{logInfluenzaDTO.suma8}"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">B</p:column>
+                        <p:column colspan="2">
+                            <p:inputText maxlength="4"
+                                         size="2"
+                                         required="true" 
+                                         requiredMessage="Campo vacío"
+                                         class="t5_B"
+                                         value="#{logInfluenzaDTO.t5_PS_B_A}"
+                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot9" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText>
+                        </p:column>
+                            <p:column colspan="2">
+                                <p:inputText maxlength="4"
+                                             size="2"
+                                             required="true" 
+                                             requiredMessage="Campo vacío"
+                                             class="t5_B"
+                                             value="#{logInfluenzaDTO.t5_PS_B_H}"
+                                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                    <p:ajax event="keyup" update="tot9" listener="#{logInfluenzaDTO.sumar}"/>
+                                </p:inputText>
+                            </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot9" value="#{logInfluenzaDTO.suma9}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid> <br></br>
+                <!-- TABLE 6 -->
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="10" style="background: #004a93; color: #ffffff;">VACUNAS CONTRA INFLUENZA ACUMULADAS</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">TOTAL DE VACUNAS RECIBIDAS DEL GOBIERNO FEDERAL</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="VCINFLU"
+                                               value="#{logInfluenzaDTO.t6_V_TRGB}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot10" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">VACUNAS APLICADAS A PERSONAL DE SALUD</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="VCINFLU"
+                                               value="#{logInfluenzaDTO.t6_V_VAPS}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot10" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">PERSONAL DE SALUD QUE SE VACUNÓ FUERA DE LA INSTITUCIÓN</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="VCINFLU"
+                                               value="#{logInfluenzaDTO.t6_V_PSV}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot10" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">VACUNAS APLICADAS A PACIENTES DE LA INSTITUCIÓN</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="VCINFLU"
+                                               value="#{logInfluenzaDTO.t6_V_VAP}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot10" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="6">VACUNAS APLICADAS DE FAMILIARES DE PACIENTES Y EN PÚBLICO EN GENERAL</p:column>
+                        <p:column colspan="2"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="VCINFLU"
+                                               value="#{logInfluenzaDTO.t6_V_VAF}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot10" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold; align-items: center" colspan="6">TOTAL</p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot10" value="#{logInfluenzaDTO.suma10}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid><br></br>
+                <!--TABLE 7-->
+                <p:panelGrid style="margin: 0 auto; text-align: center; width: 50%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="12" style="font-weight: bold; background: #004a93; color: #ffffff;">EXISTENCIA DE OSELTAMIVIR (ACUMULADO)</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold;"></p:column>
+                            <p:column colspan="4" style="font-weight: bold;">AMBULATORIO</p:column>
+                            <p:column colspan="4" style="font-weight: bold;">HOSPITALIZADO</p:column>
+                            <p:column colspan="2" style="font-weight: bold;">TOTAL</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">TRATAMIENTOS PRESCRITOS</p:column>
+                        <p:column colspan="4"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="OSACU"
+                                               value="#{logInfluenzaDTO.t7_OA_TP_A}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot11" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                        <p:column colspan="4"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="OSACU"
+                                               value="#{logInfluenzaDTO.t7_OA_TP_H}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));">
+                                <p:ajax event="keyup" update="tot11" listener="#{logInfluenzaDTO.sumar}"/>
+                            </p:inputText> </p:column>
+                        <p:column colspan="2">
+                            <h:outputText id="tot11" value="#{logInfluenzaDTO.suma11}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;" colspan="2">EXISTENCIA EN LA INSTITUCIÓN</p:column>
+                        <p:column colspan="10"><p:inputText maxlength="4"
+                                               size="2"
+                                               required="true" 
+                                               requiredMessage="Campo vacío"
+                                               class="OSACU"
+                                               value="#{logInfluenzaDTO.t7_OA_EI_A}"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"></p:inputText> </p:column>
+                    </p:row>
+                </p:panelGrid><br></br>
+                
+                <!--<p:panelGrid columns="1" style="margin: 0 auto; text-align: center;">
+
+                    <p:commandButton value="Actualizar" 
+                                     type="button" 
+                                     style="background-color: coral"
+                                     action="{registroDatosDAO.insertarValores}"
+                                     actionListener="{registroDatosDAO.showMessage}"/> 
+                </p:panelGrid>-->
+                <p:dialog header="Confirmación" widgetVar="dlg1" minHeight="60">  
+                    <h:outputLabel value="Datos Guardados!"/> 
+                </p:dialog>
+            </p:panel>
+            <p:commandButton value="Actualizar"  
+                             style="background-color:  green"
+                             action="#{logInfluenzaDAO.insertarValores()}"
+                             actionListener="#{logInfluenzaDAO.showMessage()}"
+                             onclick="window.location.reload(true);"
+                             />
+           
+        </h:form>
+        <div style="height: 50px"></div>
+    </h:body>
+</html>

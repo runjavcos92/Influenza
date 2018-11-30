@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link href='https://framework-gb.cdn.gob.mx/favicon.ico' rel='shortcut icon'/>
+        <link href="https://www.gob.mx/cms/application.css" rel="stylesheet" />
+	<link href="https://framework-gb.cdn.gob.mx/assets/styles/main.css" rel="stylesheet"/>
+	<script type="text/javascript" src="https://framework-gb.cdn.gob.mx/gobmx.js"></script>
+        <title>CCINSHAE|GESTION DE USUARIOS</title>
+    </h:head>
+    <h:body>
+        <div class="nav" role="navigation">
+		<nav class="navbar navbar-inverse sub-navbar navbar-fixed-top">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#subenlaces">
+                          <span class="sr-only">Interruptor de Navegación</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">CCINSHAE -  INFLUENZA</a>
+                      </div>
+                    </div>
+                </nav>		
+            </div>
+        <div style="height: 50px"></div>
+        <h:form>
+            <p:toolbar style="background: #004a93; color: #f5f5f5;">
+                <f:facet name="left">
+                    Unidad Médica: <p:outputLabel value="#{instituto.nombre}"></p:outputLabel>
+                </f:facet>
+                <f:facet name="right">
+                    <h:commandLink value="Cerrar Sesión"
+                                   style="background: #004a93; color: #f5f5f5;"
+                                   action="#{usuario.cerrarSesion()}"></h:commandLink>
+                </f:facet>
+            </p:toolbar>
+            <p:messages id="msjs" showDetail="true" closable="true"/>
+            <p:panel header="Gestionar Usuarios" id="panel">
+                    <p:tab title="Gestionar Usuarios">
+                        <p:accordionPanel>
+                            <p:tab title="Crear Usuario">
+                                <h:panelGrid columns="11">
+                                    <h:outputLabel value="Nombre Personal:"/>
+                                    <h:inputText  
+                                                 requiredMessage="Campo vacío"
+                                                 value="#{userBean.nombreCreate}"
+                                                 id="nombre_personal"/>
+                                    <h:outputLabel value="Usuario:"/>
+                                    <h:inputText 
+                                                 requiredMessage="Campo vacío"
+                                                 value="#{userBean.usuarioCreate}"
+                                                 id="usuarioCreate"/>
+                                    <h:outputLabel value="Contraseña:"/>
+                                    <h:inputText 
+                                                 requiredMessage="Campo vacío"
+                                                 value="#{userBean.contraseñaCreate}"
+                                                 id="contraseñaCreate">
+                                    </h:inputText>
+                                    <h:outputLabel value="Privilegios:"/>
+                                    <p:selectOneMenu id="rol" value="#{rolDTO.idRol}">
+                                        <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                        <f:selectItems value="#{rolDTO.listaRol}"/>
+                                        <p:ajax event="change" update="@this"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton value="Guardar" 
+                                                     action="#{UsuarioDAO.createNoAdmin(userBean,rolDTO.idRol,instituto.id_instituto)}"
+                                                     actionListener="#{UsuarioDAO.mensajes()}"
+                                                     update="listaUsers1 listaUsers2">
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
+                            <p:tab title="Modificar Usuario">
+                                <p:panel>
+                                    <h:panelGrid columns="10">   
+                                    <h:outputLabel value="Seleccionar usuario:"/>
+                                    <p:selectOneMenu id="listaUsers1" value="#{userBeanUpdate.id_usuario}">
+                                        <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                        <f:selectItems value="#{userBeanUpdate.listaUsuarioU}"/>
+                                        <f:ajax listener="#{userBeanUpdate.changeUser}" render="nombreUpdate usuarioUpdate contraseñaUpdate @this"/>
+                                    </p:selectOneMenu>
+                                            <h:outputLabel value="Nombre Personal:"/>
+                                            <h:inputText value="#{userBeanUpdate.nombre}" id="nombreUpdate"/>
+                                            <h:outputLabel value="Nombre de usuario"/>
+                                            <h:inputText value="#{userBeanUpdate.usuario}" id="usuarioUpdate"/>
+                                            <h:outputLabel value="Contraseña:"/>
+                                            <h:inputText value="#{userBeanUpdate.contraseña}" id="contraseñaUpdate"/>
+                                        <p:commandButton value="Modificar"
+                                                         action="#{UsuarioDAO.update(userBeanUpdate.id_usuario,userBeanUpdate)}"
+                                                         actionListener="#{userBean.mensajesUpdate()}"
+                                                         update="listaUsers1 listaUsers2"/>
+                                </h:panelGrid>
+                              </p:panel>
+                            </p:tab>
+                            <p:tab title="Borrar Usuario">
+                                <h:panelGrid columns="3">
+                                    <p:selectOneMenu id="listaUsers2" value="#{userBean.id_usuario}">
+                                        <f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true"/>
+                                        <f:selectItems value="#{userBean.listaUsuario}"/>
+                                        <p:ajax event="change" update="@this"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton value="Borrar"
+                                                     action="#{UsuarioDAO.delete(userBean.id_usuario)}"
+                                                     actionListener="#{userBean.mensajes()}"
+                                                     update="listaUsers2 listaUsers1"/>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:tab>
+            </p:panel>
+           <!-- <p:panel header="Lista de Usuarios">
+                <p:dataTable value="#{usuarioTable.usuarios}">
+                    <p:column headerText="Nombre Personal">
+                        <h:outputText value="#{usuarioTable.nombre_personal}"/>
+                    </p:column>
+                    <p:column headerText="Nombre de Usuario">
+                        <h:outputText value="#{usuarioTable.nombre_usuario}"/>
+                    </p:column>
+                    <p:column headerText="Privilegios">
+                        <h:outputText value="#{usuarioTable.privilegio}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>-->
+        </h:form>
+         <div style="height: 50px"></div>
+    </h:body>
+</html>
